@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if anime %}Editar{% else %}Adicionar{% endif %} Anime - NekoPlay</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NekoPlay</h1>
+            <p>{% if anime %}Editar Anime{% else %}Adicionar Novo Anime{% endif %}</p>
+        </header>
+
+        <div class="form-container">
+            <form method="POST" class="anime-form">
+                <div class="form-group">
+                    <label for="nome">Nome do Anime *</label>
+                    <input type="text" id="nome" name="nome" value="{{ anime.nome if anime else '' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo">Tipo *</label>
+                    <input type="text" id="tipo" name="tipo" placeholder="Ex: Shonen, Drama, Romance" value="{{ anime.tipo if anime else '' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="status">Status *</label>
+                    <select id="status" name="status" required>
+                        <option value="Planejando" {% if anime and anime.status == 'Planejando' %}selected{% endif %}>Planejando</option>
+                        <option value="Assistindo" {% if anime and anime.status == 'Assistindo' %}selected{% endif %}>Assistindo</option>
+                        <option value="Assistido" {% if anime and anime.status == 'Assistido' %}selected{% endif %}>Assistido</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notas">Notas</label>
+                    <textarea id="notas" name="notas" rows="4" placeholder="Adicione suas notas aqui...">{{ anime.notas if anime else '' }}</textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-add">
+                        {% if anime %}Salvar Alterações{% else %}Adicionar Anime{% endif %}
+                    </button>
+                    <a href="/" class="btn btn-cancel">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

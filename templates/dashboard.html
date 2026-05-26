@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NekoPlay - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NekoPlay</h1>
+            <p>Dashboard de Animes</p>
+        </header>
+
+        <div class="status-bar">
+            <a href="?filtro=" class="status-btn {% if not filtro_ativo %}active{% endif %}">
+                <span class="status-icon">📺</span>
+                <span class="status-label">Todos</span>
+                <span class="status-count">{{ animes|length }}</span>
+            </a>
+            <a href="?filtro=Assistido" class="status-btn {% if filtro_ativo == 'Assistido' %}active{% endif %}">
+                <span class="status-icon">✅</span>
+                <span class="status-label">Assistido</span>
+                <span class="status-count">{{ status_counts.assistido }}</span>
+            </a>
+            <a href="?filtro=Assistindo" class="status-btn {% if filtro_ativo == 'Assistindo' %}active{% endif %}">
+                <span class="status-icon">▶️</span>
+                <span class="status-label">Assistindo</span>
+                <span class="status-count">{{ status_counts.assistindo }}</span>
+            </a>
+            <a href="?filtro=Planejando" class="status-btn {% if filtro_ativo == 'Planejando' %}active{% endif %}">
+                <span class="status-icon">📅</span>
+                <span class="status-label">Planejando</span>
+                <span class="status-count">{{ status_counts.planejando }}</span>
+            </a>
+        </div>
+
+        <div class="toolbar">
+            <a href="/adicionar" class="btn btn-add">+ Adicionar Anime</a>
+            <a href="/filtro-detalhado" class="btn btn-filter">🔍 Filtro Detalhado</a>
+        </div>
+
+        <div class="anime-list">
+            {% if animes %}
+                {% for anime in animes %}
+                    <div class="anime-card">
+                        <div class="anime-header">
+                            <h3>{{ anime.nome }}</h3>
+                            <span class="anime-type">{{ anime.tipo }}</span>
+                        </div>
+                        <div class="anime-info">
+                            <p><strong>Status:</strong> <span class="status-badge status-{{ anime.status|lower|replace(' ', '-') }}">{{ anime.status }}</span></p>
+                            <p><strong>Data:</strong> {{ anime.data }}</p>
+                            {% if anime.notas %}
+                                <p><strong>Notas:</strong> {{ anime.notas }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="anime-actions">
+                            <a href="/editar/{{ anime.id }}" class="btn btn-edit">Editar</a>
+                            <a href="/deletar/{{ anime.id }}" class="btn btn-delete" onclick="return confirm('Deseja deletar?')">Deletar</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <p>Nenhum anime encontrado. Comece a adicionar! 🎬</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

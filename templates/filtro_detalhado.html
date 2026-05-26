@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtro Detalhado - NekoPlay</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>NekoPlay</h1>
+            <p>Filtro Detalhado</p>
+        </header>
+
+        <div class="filter-container">
+            <form method="GET" class="filter-form">
+                <div class="filter-group">
+                    <label for="nome">Buscar por Nome</label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite o nome do anime..." value="{{ request.args.get('nome', '') }}">
+                </div>
+
+                <div class="filter-group">
+                    <label for="tipo">Tipo</label>
+                    <input type="text" id="tipo" name="tipo" placeholder="Ex: Shonen, Drama..." value="{{ request.args.get('tipo', '') }}">
+                </div>
+
+                <div class="filter-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status">
+                        <option value="">Todos os Status</option>
+                        <option value="Planejando" {% if request.args.get('status') == 'Planejando' %}selected{% endif %}>Planejando</option>
+                        <option value="Assistindo" {% if request.args.get('status') == 'Assistindo' %}selected{% endif %}>Assistindo</option>
+                        <option value="Assistido" {% if request.args.get('status') == 'Assistido' %}selected{% endif %}>Assistido</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="data">Data (AAAA-MM-DD)</label>
+                    <input type="text" id="data" name="data" placeholder="2024-05-26" value="{{ request.args.get('data', '') }}">
+                </div>
+
+                <div class="filter-actions">
+                    <button type="submit" class="btn btn-filter">Filtrar</button>
+                    <a href="/filtro-detalhado" class="btn btn-cancel">Limpar Filtros</a>
+                    <a href="/" class="btn btn-cancel">Voltar</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="anime-list">
+            <h2>Resultados ({{ animes|length }})</h2>
+            {% if animes %}
+                {% for anime in animes %}
+                    <div class="anime-card">
+                        <div class="anime-header">
+                            <h3>{{ anime.nome }}</h3>
+                            <span class="anime-type">{{ anime.tipo }}</span>
+                        </div>
+                        <div class="anime-info">
+                            <p><strong>Status:</strong> <span class="status-badge status-{{ anime.status|lower|replace(' ', '-') }}">{{ anime.status }}</span></p>
+                            <p><strong>Data:</strong> {{ anime.data }}</p>
+                            {% if anime.notas %}
+                                <p><strong>Notas:</strong> {{ anime.notas }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="anime-actions">
+                            <a href="/editar/{{ anime.id }}" class="btn btn-edit">Editar</a>
+                            <a href="/deletar/{{ anime.id }}" class="btn btn-delete" onclick="return confirm('Deseja deletar?')">Deletar</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <p>Nenhum anime encontrado com esses filtros. 🔍</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
