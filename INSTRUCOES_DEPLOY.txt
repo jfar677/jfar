@@ -1,0 +1,62 @@
+# ⚠️ Git NÃO INSTALADO
+
+Para fazer o deploy, você precisa instalar Git primeiro.
+
+## 🔧 Instalação do Git
+
+1. **Baixe o Git:**
+   - Acesse: https://git-scm.com/download/win
+   - Clique em "Click here to download"
+
+2. **Execute o instalador:**
+   - Abra o arquivo `.exe` baixado
+   - Clique "Next" até finalizar (use opções padrão)
+
+3. **Reinicie o PowerShell** (feche e abra novamente)
+
+4. **Verifique a instalação:**
+   ```powershell
+   git --version
+   ```
+
+## 🚀 Após instalar Git, execute no PowerShell:
+
+```powershell
+cd c:\Users\joaof\Desktop\NEKOPLAY
+
+# Inicializar repositório
+git init
+
+# Configurar usuário
+git config --global user.name "jfar677"
+git config --global user.email "seu.email@github.com"
+
+# Adicionar todos os arquivos
+git add .
+
+# Fazer commit
+git commit -m "Initial commit: NekoPlay Dashboard"
+
+# Adicionar remote do seu repositório
+git remote add origin https://github.com/jfar677/jfar.git
+
+# Fazer push para main
+git branch -M main
+git push -u origin main
+```
+
+## ✅ Se pedir autenticação:
+
+Se o terminal pedir um token/senha:
+1. Vá para: https://github.com/settings/tokens
+2. Clique em "Generate new token (classic)"
+3. Selecione permissão "repo"
+4. Copie o token gerado
+5. Cole no terminal quando pedir a senha
+
+---
+
+**Após instalar Git e executar os comandos, seu código estará em:**
+```
+https://github.com/jfar677/jfar
+```
